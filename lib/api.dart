@@ -5,8 +5,8 @@ import 'package:todo/list_model.dart';
 
 class ToDoService {
   Future<List<ToDoModel>> fetchToDo() async {
-    final response = await http
-        .get(Uri.https('https://jsonplaceholder.typicode.com', '/posts'));
+    final response =
+        await http.get(Uri.https('jsonplaceholder.typicode.com', 'posts'));
 
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body);

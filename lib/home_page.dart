@@ -12,27 +12,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final service = ToDoService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(builder:
-          (BuildContext context, AsyncSnapshot<List<ToDoModel>> snapshot) {
-        if (snapshot.hasData) {
-          List<ToDoModel> todos = snapshot.data;
-          return ListView(
-            children: todos
-                .map(
-                  (ToDoModel model) => ListTile(
-                    title: Text(model.title),
-                    subtitle: Text("${model.userId}"),
-                  ),
-                )
-                .toList(),
-          );
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      }),
+      body: FutureBuilder(
+          future: service.fetchToDo(),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<ToDoModel>> snapshot) {
+            if (snapshot.hasData) {
+              List<ToDoModel> todos = snapshot.data;
+              return ListView(
+                children: todos
+                    .map(
+                      (ToDoModel model) => ListTile(
+                        title: Text(model.title),
+                        subtitle: Text("${model.userId}"),
+                      ),
+                    )
+                    .toList(),
+              );
+            } else {
+              print(snapshot.error);
+              return Center(child: CircularProgressIndicator());
+            }
+          }),
     );
   }
 }
